@@ -1,0 +1,57 @@
+language: python
+
+python:
+  - 3.7
+
+addons:
+  apt:
+    packages:
+      - pyqt5-dev-tools
+
+git:
+  submodules: false
+
+before_install:
+  - >-
+    openssl aes-256-cbc
+    -K $encrypted_0b023fb27a48_key
+    -iv $encrypted_0b023fb27a48_iv
+    -in github_deploy_key.enc
+    -out github_deploy_key.out
+    -d
+  - chmod 600 github_deploy_key.out
+  - eval $(ssh-agent -s)
+  - ssh-add github_deploy_key.out
+  - git submodule update --init --recursive
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - pyrcc5 -o plugin/resources_rc.py plugin/resources.qrc
+  - scripts/ci/deploy.sh
+
+env:
+  global:
+    - PUSH_TO=github # plugins (osgeo login, default), github (current repo)
+    - PLUGIN_AUTHOR=OPENGIS.ch
+
+    # OSGEO credentials to release the plugin
+    # Generate with the following command for proper special characters support
+    # travis encrypt OSGEO_PASSWORD=\''Your super secret password!'\'
+    - OSGEO_USERNAME=m-kuhn
+    - secure: "JTcQtn4nvMevskR2A6ebIOnxNVpui/Rum6o4Gz6W4QiLM6WEK8QhLufB/v34j3l0kLrlXF1gbuEv/Jgq85FhOW+a5sAz3zr23yEph924oUW4b5EawFDkx3etFXaKtOLKLAbFo2eWA2lXS2c5vtbnmQ+aeTUDulw9OOZKv/HypvpZsWSa7MnSXrNX+b9pYl2Axpc1oyhvci7q0xapsZOk8O1m15JCR0Oh5KZPlUn8fSBA2ARn70e/SKjVaCtQuuFDL6Pe+0CB2bAkQDnBY9ajvd5DIBCDMwq+8UxpiA5bj9qV4zXo0MyUWb3sgiU54tzgGgsiDbGJ8/fcrHEcJhu/nhAeVGOtDKF4+WmbtASiuIJqGOE8Qy7WDXHntLck31E0zFV85ScW5dcGvCzBDT7RKTdFG07p9zQGTKX785FGEjBkopIEvPs60kORog6MKLMFvLTNsjrvQnie2Fn8NYQ+vKYunqgbbBkCEvX7OXGrk87NrX6YtxwJQ5J3bPdh7TxL83Jfe5O+Clq5if8M7YDKDnP+QP5t+eF+WNDHaIAFIr0jTcop2d9acOBKSabbC8eTAXayu8V3JywqDS4jJdnd1ifQs9/vO8Qi8qsw+pBJBoHJ2PGfwbSgIhyS5YZBKA31Rxw8RFJpvs6HIDLeQyzdnh6zLAP3SQGPWHY1al9JUhQ="
+
+    # TRANSIFEX_API_TOKEN, generated on Transifex website
+    # travis encrypt TX_TOKEN="......"
+    - secure: "lznZFeWfTYwRtj7TS8/pab2itZhHk9ObIgg7IWIOPY+1rdHnM2HUrbpG+/KVChM7EJluj2n8qSp98bdAoj4mU2QMS5rzagPKXudqFZdZFbcoC0KY3J+NBaGXpzwuLDLufOezaKeZjvXtDi0cjKCysw4BaY8pTxQE2MUN9dQnccv1Zr6itYw2LRiVMc9eNTRsW+W0NjEO5Afcm0WZ/Mqgk/HClxk6kScKKVlhYz61wJYDPQ1qmCbQ2rp3e2X5NSuYdREXeWjUlC+INM+kXoblQwmv7Bj61ilF103iZoMOwMTpN8dPfwlBQ0j4mk6t8LMChaJtavcqFdlQ1JxrTlzxV56O8UwpeAbRT0j+Ox2C9KCf9paDK6tIu1lt4qhlmQJUVpqPVlmnZQcky7uJVFXXG7ZVT3+4Rp7VaGV/6cVDgmqJvXmGV6Xe9HTMR6Fj+b7Ic59RjFBNY2QfvCeTf//pI3Xy//mx5mNeIdHtI8Eb2qrt/ZHh+0XwAri1vhtyW1sWzKTA4D3FPdU7mmA4Ad00whgodf2kie6yL/+4PqPNNm/HoQGwR6+fy6ett0G4gvcTqrD7ks1kpHkT0ReLiXy5PQgxTMTvA4/ATfg68v/vESM3F0TLKRilaZJ9l2fa/g/UiC7hRM8kbAlar0rqsUK8rcT32CksxmVvjEQqppKt69E="
+
+    # GH_TOKEN for creating releases
+    # https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line
+    # authorize only "public_repo"
+    # travis encrypt GH_TOKEN="......"
+    - secure: "f2iHNi2Z95mjjBBtSwjBdU/Jxqp79Bppln5zCe0slK3aARKqiO/HLCeSMg6hjyQJpP+MzpzdHyHfLEMPzg6W0EcfIoCYgELfqHGKTmSgT2NOVLjL8TTn8M8yTCn1Nd4scYY4GFP4loxCv8tTYX9X4j+M1KoKT97tXLQc72jtMTqhqcp/elYrzNgu78G8rhloyy+F34A6enRfcxGrD6DBZ4chwDmVrAybFzOsAuDxI4nOWPqcF4NG/+nJeomzxba5eATMbUbCgDNXMoXRjg3qL3I5zzlyoq/Gte4yQLNXDP79AarbAJtNJmJMI/2k20DjD3MhoWc+eAT2bK8TjMNDRrvTg0geBGta1AI9/eo/QJRbdm6d6TkAvjn3NhNUR7P2XwHzWm+kndqxE37GRZSZEmjnc1ZQpnASnkoApDaQKnDqTM2eB72I6pzg++fs3URWKfV4E4T0rpeIfIJWGkJ2Ar9KTdX9KeJ1goM16mxiWTWZjnTn6MQ8KBj2PEzaXsihUEkC63W1g1gz15aZngXDyAaBHR7aCnsiJHKfLZgDirR09pNEb89p5ETl2QvPnFSLkT23fsdJ5Ac6rI6wWzcSJtYOTGPhIg449J0a9iRm3Fj+E6m2xPS/GdrbmvOEUXeLAhrvmrbJWGaMGnNl0P5G8zwG4LpZHxJMb1pKqnhNqE8="
+
+    # if APPEND_CHANGELOG is defined, a list of all commits since
+    # the last release will be appended to the changelog.
+    # - APPEND_CHANGELOG=true
