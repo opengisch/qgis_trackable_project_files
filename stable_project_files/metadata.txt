@@ -1,7 +1,7 @@
 [general]
 name=Stable QGIS Project
 description=Orders attributes in .qgs project files in a predictable order. This helps tracking QGIS project files in versioning systems like GIT.
-version=1.0
+version=1.0.0
 qgisMinimumVersion=3.0
 author=Matthias Kuhn
 email=matthias@opengis.ch
