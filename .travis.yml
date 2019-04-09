@@ -17,10 +17,8 @@ before_install:
 install:
   - pip install -r requirements.txt
 
-script:
-  - scripts/ci/deploy.sh
-
-env:
-  global:
-    - PUSH_TO=github # plugins (osgeo login, default), github (current repo)
-    - PLUGIN_AUTHOR=OPENGIS.ch
+jobs:
+  include:
+    - stage: deploy
+      if: tag IS present
+      script: plugin_ci/release/release.sh
