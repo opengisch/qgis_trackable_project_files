@@ -1,5 +1,5 @@
 [general]
-name=Stable QGIS Project
+name=Trackable QGIS Project
 description=Make QGIS Project files better trackable in git
 version=dev
 qgisMinimumVersion=3.0
