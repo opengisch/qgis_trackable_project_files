@@ -31,4 +31,6 @@ class StableProjectFile:
         self.project_saved_connection = QgsProject.instance().projectSaved.connect(self.normalize_xml)
 
     def unload(self):
-        QgsProject.instance().projectSaved.disconnect(self.project_saved_connection)
+        p = QgsProject.instance()
+        if p and self.project_saved_connection:
+            p.projectSaved.disconnect(self.project_saved_connection)
