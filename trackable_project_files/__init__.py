@@ -22,7 +22,13 @@ class StableProjectFile:
         self.iface = iface
 
     def normalize_xml(self):
-        fn = QgsProject.instance().fileName()
+        project = QgsProject.instance()
+
+        #  We don't do anything with qgz projects
+        if project.isZipped():
+            return
+
+        fn = project.fileName()
         with open(fn, 'r') as file:
             et = ET.parse(file)
         et.write_c14n(fn)
