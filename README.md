@@ -7,4 +7,4 @@ QGIS project files (.qgs) are XML  files. They tend to change a lot when saving 
 
 Install this plugin and it will make sure that attributes are ordered alphabetically whenever you save a QGIS file.
 
-The plugin works better if it's used with QGIS ≥ 3.6.
+The plugin works best if it's used with QGIS ≥ 3.6.

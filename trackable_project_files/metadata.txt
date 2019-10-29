@@ -5,6 +5,6 @@ version=dev
 qgisMinimumVersion=3.0
 author=Matthias Kuhn
 email=matthias@opengis.ch
-about=Orders attributes in .qgs project files in a predictable order. This helps tracking QGIS project files in versioning systems like git. The plugin works better with QGIS ≥ 3.6.
+about=Orders attributes in .qgs project files in a predictable order. This helps tracking QGIS project files in versioning systems like git. The plugin works best with QGIS ≥ 3.6.
 tracker=https://github.com/opengisch/qgis_trackable_project_files/issues
 repository=https://github.com/opengisch/qgis_trackable_project_files
