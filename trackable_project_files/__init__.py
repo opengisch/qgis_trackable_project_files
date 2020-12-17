@@ -29,6 +29,10 @@ class StableProjectFile:
         if project.isZipped():
             return
 
+        # Anything but local files will return a pointer to the storage
+        if project.projectStorage():
+            return
+
         fn = project.fileName()
         with open(fn, 'r') as file:
             et = ET.parse(file)
