@@ -1,0 +1,29 @@
+name: Continuous integration
+
+on:
+  release:
+    types: ['prereleased', 'released']
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    if: ${{ github.event_name == 'release' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo pip install qgis-plugin-ci
+      - name: Release
+        env:
+          GITHUB_REF: ${{ github.ref }}
+          OSGEO_USERNAME: mkuhn
+          OSGEO_PASSWORD: ${{ secrets.OSGEO_PASSWORD }}
+        run: |
+          qgis-plugin-ci release ${GITHUB_REF##*/} --github-token ${{ secrets.GITHUB_TOKEN }} --osgeo-username "${OSGEO_USERNAME}" --osgeo-password "${OSGEO_PASSWORD}"
+      - name: Upload release assets
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: ./qgis_trackable_project_files.${GITHUB_REF##*/}.zip
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${GITHUB_REF##*/}
