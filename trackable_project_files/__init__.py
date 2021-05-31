@@ -34,7 +34,7 @@ class StableProjectFile:
             return
 
         fn = project.fileName()
-        with open(fn, 'r') as file:
+        with open(fn, 'r', encoding='utf-8') as file:
             et = ET.parse(file)
         et.write_c14n(fn)
 
