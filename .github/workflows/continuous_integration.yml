@@ -21,9 +21,3 @@ jobs:
           OSGEO_PASSWORD: ${{ secrets.OSGEO_PASSWORD }}
         run: |
           qgis-plugin-ci release ${GITHUB_REF##*/} --github-token ${{ secrets.GITHUB_TOKEN }} --osgeo-username "${OSGEO_USERNAME}" --osgeo-password "${OSGEO_PASSWORD}"
-      - name: Upload release assets
-        uses: AButler/upload-release-assets@v2.0
-        with:
-          files: ./qgis_trackable_project_files.${GITHUB_REF##*/}.zip
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag: ${GITHUB_REF##*/}
