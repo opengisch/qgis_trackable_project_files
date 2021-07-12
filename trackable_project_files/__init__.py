@@ -34,9 +34,12 @@ class StableProjectFile:
             return
 
         fn = project.fileName()
-        with open(fn, 'r', encoding='utf-8') as file:
-            et = ET.parse(file)
-        et.write_c14n(fn)
+        try:
+            with open(fn, 'r', encoding='utf-8') as file:
+                et = ET.parse(file)
+            et.write_c14n(fn)
+        except FileNotFoundError:
+            QgsMessageLog.logMessage(f"File {fn} not found, skipping normalisation.", 'trackable project files plugin', level=Qgis.Info)
 
     def initGui(self):
         self.project_saved_connection = \
