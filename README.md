@@ -1,9 +1,9 @@
 # Stable QGIS Projects
 
-## Plugin archived with QGIS 4
-
-This plugin is [no longer needed with QGIS 4 since Qt6 provides a stable XML order](https://github.com/qgis/QGIS/issues/29192#issuecomment-2346274750) out of the box 🎉.
-The QGIS 3 version of the plugin is still available.
+> [!IMPORTANT]
+> ## Plugin archived with QGIS 4
+> This plugin is [no longer needed with QGIS 4 since Qt6 provides a stable XML order](https://github.com/qgis/QGIS/issues/29192#issuecomment-2346274750) out of the box 🎉.
+> The QGIS 3 version of the plugin is still available.
 
 ## What 
 
